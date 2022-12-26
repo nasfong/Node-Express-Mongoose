@@ -1,0 +1,12 @@
+"use strict";
+exports.__esModule = true;
+exports.routerTodo = void 0;
+var express_1 = require("express");
+var todo_controller_1 = require("./todo.controller");
+var routerTodo = (0, express_1.Router)();
+exports.routerTodo = routerTodo;
+routerTodo.get('', todo_controller_1.readAllData);
+routerTodo.post('', todo_controller_1.createData);
+routerTodo.get('/:id', todo_controller_1.readData);
+routerTodo.put('/:id', todo_controller_1.updateData);
+routerTodo["delete"]('/:id', todo_controller_1.deleteData);
