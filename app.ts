@@ -18,15 +18,24 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(cors())
 
-mongoose.set("strictQuery", false)
-mongoose
-  .connect(MONGO_DB, {
-    retryWrites: true,
-    w: 'majority'
-  })
-  .then(() => {
-    console.log('Dabase Connected')
-  })
+const connect = async () => {
+  try {
+    // mongoose.set("strictQuery", false)
+    await mongoose
+      .connect(MONGO_DB,
+        {
+          retryWrites: true,
+          w: 'majority'
+        }
+      )
+      .then(() => {
+        console.log('Dabase Connected')
+      })
+  } catch (error) {
+    console.log('Problemas al conectarse a la DB. Error ->', error);
+  }
+};
+connect()
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`)
