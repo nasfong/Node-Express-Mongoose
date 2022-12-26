@@ -7,12 +7,12 @@ import cors from 'cors'
 import { routerTodo } from './todo-list/todo.route'
 import { routerGame } from './game/game.route'
 
-const { PORT, MONGO_DB }: any = process.env
+const PORT = process.env.PORT || 8000
+const MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority"
 
 const app = express()
 
 app.use(express.static('public'))
-app.use('/images', express.static('images'))
 
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())

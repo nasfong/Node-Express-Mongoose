@@ -47,11 +47,10 @@ var body_parser_1 = __importDefault(require("body-parser"));
 var cors_1 = __importDefault(require("cors"));
 var todo_route_1 = require("./todo-list/todo.route");
 var game_route_1 = require("./game/game.route");
-// const { PORT, MONGO_DB }: any = process.env
 var PORT = process.env.PORT || 8000;
+var MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority";
 var app = (0, express_1["default"])();
 app.use(express_1["default"].static('public'));
-app.use('/images', express_1["default"].static('images'));
 app.use(body_parser_1["default"].urlencoded({ extended: false }));
 app.use(body_parser_1["default"].json());
 app.use((0, cors_1["default"])());
@@ -63,7 +62,7 @@ var connect = function () { return __awaiter(void 0, void 0, void 0, function ()
                 _a.trys.push([0, 2, , 3]);
                 // mongoose.set("strictQuery", false)
                 return [4 /*yield*/, mongoose_1["default"]
-                        .connect("mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority", {
+                        .connect(MONGO_DB, {
                         retryWrites: true,
                         w: 'majority'
                     })
