@@ -22,7 +22,7 @@ const connect = async () => {
   try {
     // mongoose.set("strictQuery", false)
     await mongoose
-      .connect("mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority",
+      .connect(MONGO_DB,
         {
           retryWrites: true,
           w: 'majority'

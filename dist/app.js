@@ -47,7 +47,8 @@ var body_parser_1 = __importDefault(require("body-parser"));
 var cors_1 = __importDefault(require("cors"));
 var todo_route_1 = require("./todo-list/todo.route");
 var game_route_1 = require("./game/game.route");
-var _a = process.env, PORT = _a.PORT, MONGO_DB = _a.MONGO_DB;
+// const { PORT, MONGO_DB }: any = process.env
+var PORT = process.env.PORT || 8000;
 var app = (0, express_1["default"])();
 app.use(express_1["default"].static('public'));
 app.use('/images', express_1["default"].static('images'));
