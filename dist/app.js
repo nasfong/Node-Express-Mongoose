@@ -46,7 +46,7 @@ var body_parser_1 = __importDefault(require("body-parser"));
 var cors_1 = __importDefault(require("cors"));
 var index_1 = require("./src/index");
 var PORT = process.env.PORT;
-var MONGO_DB = process.env.MONGO_DB;
+var MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority";
 var app = (0, express_1["default"])();
 app.use(express_1["default"].static('public'));
 app.use(body_parser_1["default"].urlencoded({ extended: false }));

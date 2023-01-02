@@ -4,7 +4,7 @@ import { createData, readAllData, readData, updateData, deleteData } from './tod
 
 const routerTodo = Router()
 
-routerTodo.get('', authMiddleware, readAllData)
+routerTodo.get('', readAllData)
 routerTodo.post('', authMiddleware, createData)
 routerTodo.get('/:id', authMiddleware, readData)
 routerTodo.put('/:id', authMiddleware, updateData)
