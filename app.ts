@@ -1,9 +1,8 @@
 import express, { Router } from 'express'
 import mongoose from 'mongoose'
-import 'dotenv/config'
+import * as dotenv from 'dotenv';
 import bodyParser from 'body-parser'
 import cors from 'cors'
-
 import {
   routerMenu,
   routerTodo,
@@ -12,6 +11,7 @@ import {
   routerAdministrator
 } from './src/index'
 
+dotenv.config()
 const PORT = process.env.PORT
 const MONGO_DB = process.env.MONGO_DB
 
