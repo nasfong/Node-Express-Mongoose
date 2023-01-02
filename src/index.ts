@@ -1,0 +1,5 @@
+export * from './administrator/administrator.route'
+export * from './auth/auth.route'
+export * from './game/game.route'
+export * from './menu/menu.route'
+export * from './todo-list/todo.route'

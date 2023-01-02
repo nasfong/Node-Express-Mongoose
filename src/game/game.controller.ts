@@ -20,17 +20,21 @@ const storage = multer.diskStorage({
 });
 export const upload = multer({ storage: storage }).single('image');
 
-const createData = (req: any, res: Response) => {
+const createData = async (req: Request, res: Response) => {
+  console.log(req.file)
   const url = req.protocol + '://' + req.get("host")
   const game = new Game({
     name: req.body.name !== 'undefined' ? req.body.name : '',
     image: req.file?.filename !== undefined ? url + '/uploads/' + req.file?.filename : ''
   })
   try {
-    return game
-      .save()
-      .then(game => res.status(200).json({ data: game }))
-      .catch((validate: any) => res.status(201).json({ data: validate.errors }))
+    try {
+      const game_1 = await game
+        .save();
+      return res.status(200).json({ data: game_1 });
+    } catch (validate) {
+      return res.status(201).json({ data: validate.errors });
+    }
   } catch (error) {
     console.log(error)
   }
@@ -60,6 +64,7 @@ const readData = async (req: Request, res: Response) => {
 const updateData = async (req: Request, res: Response) => {
   const id = req.params.id
   const url = req.protocol + '://' + req.get("host") + '/uploads/'
+  console.log(req.file)
   return Game
     .findById(id)
     .then(game => {
@@ -69,7 +74,7 @@ const updateData = async (req: Request, res: Response) => {
           fs.unlinkSync(`public/uploads/${image}`)
           game.set({
             name: req.body.name !== 'undefined' ? req.body.name : '',
-            image: req.file?.filename !== undefined ? url + req.file?.filename : ''
+            image: true ? url + req.file?.filename : ''
           })
         } else {
           game.set({
