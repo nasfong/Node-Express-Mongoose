@@ -12,8 +12,8 @@ import {
   routerAdministrator
 } from './src/index'
 
-const PORT = process.env.PORT || 8000
-const MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority"
+const PORT = process.env.PORT
+const MONGO_DB = process.env.MONGO_DB
 
 const app = express()
 

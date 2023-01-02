@@ -1,0 +1,13 @@
+"use strict";
+exports.__esModule = true;
+exports.routerAdministrator = void 0;
+var express_1 = require("express");
+var authMiddleware_1 = require("../../Middleware/authMiddleware");
+var administrator_controller_1 = require("./administrator.controller");
+var routerAdministrator = (0, express_1.Router)();
+exports.routerAdministrator = routerAdministrator;
+routerAdministrator.get('', authMiddleware_1.authMiddleware, administrator_controller_1.readAllData);
+routerAdministrator.post('', authMiddleware_1.authMiddleware, administrator_controller_1.createData);
+routerAdministrator.get('/:id', authMiddleware_1.authMiddleware, administrator_controller_1.readData);
+routerAdministrator.put('/:id', authMiddleware_1.authMiddleware, administrator_controller_1.updateData);
+routerAdministrator["delete"]('/id', authMiddleware_1.authMiddleware, administrator_controller_1.deleteData);

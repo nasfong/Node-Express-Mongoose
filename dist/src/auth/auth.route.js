@@ -1,0 +1,11 @@
+"use strict";
+exports.__esModule = true;
+exports.routerAuth = void 0;
+var express_1 = require("express");
+var authProfile_1 = require("../../Middleware/authProfile");
+var auth_controller_1 = require("./auth.controller");
+var routerAuth = (0, express_1.Router)();
+exports.routerAuth = routerAuth;
+routerAuth.post('/register', auth_controller_1.register);
+routerAuth.post('/login', auth_controller_1.login);
+routerAuth.get('/profile', authProfile_1.authProfile);
