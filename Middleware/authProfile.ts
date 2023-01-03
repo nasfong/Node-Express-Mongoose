@@ -13,7 +13,7 @@ export const authProfile = async (
     if (token) {
       const decoded: any = jwt.verify(
         token,
-        process.env.JWT_KEY,
+        'MERN',
         { ignoreExpiration: true }
       )
       req.body._id = decoded?.id

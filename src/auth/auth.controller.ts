@@ -27,7 +27,7 @@ const register = async (req: Request, res: Response) => {
       firstname: auth.firstname,
       lastname: auth.lastname,
       role: auth.role
-    }, process.env.JWT_KEY, { expiresIn: '1h' })
+    }, 'MERN', { expiresIn: '1h' })
 
     return auth
       .save()
