@@ -75,7 +75,7 @@ var register = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
                     firstname: auth.firstname,
                     lastname: auth.lastname,
                     role: auth.role
-                }, process.env.JWT_KEY, { expiresIn: '1h' });
+                }, 'MERN', { expiresIn: '1h' });
                 return [2 /*return*/, auth
                         .save()
                         .then(function (auth) { return res.status(200).json({
@@ -117,7 +117,7 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
                     firstname: auth.firstname,
                     lastname: auth.lastname,
                     role: auth.role
-                }, process.env.JWT_KEY, { expiresIn: '1h' });
+                }, 'MERN', { expiresIn: '1h' });
                 res.status(200).json({
                     // data: auth,
                     token: token

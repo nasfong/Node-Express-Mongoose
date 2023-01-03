@@ -47,7 +47,7 @@ var authProfile = function (req, res, next) { return __awaiter(void 0, void 0, v
         try {
             token = req.headers.authorization.split(' ')[1];
             if (token) {
-                decoded = jsonwebtoken_1["default"].verify(token, process.env.JWT_KEY, { ignoreExpiration: true });
+                decoded = jsonwebtoken_1["default"].verify(token, 'MERN', { ignoreExpiration: true });
                 req.body._id = decoded === null || decoded === void 0 ? void 0 : decoded.id;
                 // console.log(decoded)
                 res.status(200).json(decoded);
