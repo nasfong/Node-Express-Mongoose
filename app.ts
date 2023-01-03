@@ -25,7 +25,7 @@ app.use(cors())
 
 const connect = async () => {
   try {
-    mongoose.set("strictQuery", false)
+    mongoose.set("strictQuery", true)
     await mongoose
       .connect(MONGO_DB,
         {
