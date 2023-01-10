@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from "express"
-import jwt from 'jsonwebtoken'
+import { tokenDecode } from "./tokenMiddleware"
 
 
 export const authMiddleware = async (
@@ -11,13 +11,8 @@ export const authMiddleware = async (
     const token = req.headers.authorization.split(' ')[1]
 
     if (token) {
-      const decoded: any = jwt.verify(
-        token,
-        'MERN',
-        { ignoreExpiration: true }
-      )
+      const decoded = tokenDecode({ token })
       req.body._id = decoded?.id
-      // console.log(decoded)
     }
     next()
   } catch (error) {

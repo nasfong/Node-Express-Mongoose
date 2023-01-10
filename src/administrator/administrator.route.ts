@@ -8,5 +8,5 @@ routerAdministrator.get('', authMiddleware, readAllData)
 routerAdministrator.post('', authMiddleware, createData)
 routerAdministrator.get('/:id', authMiddleware, readData)
 routerAdministrator.put('/:id', authMiddleware, updateData)
-routerAdministrator.delete('/id', authMiddleware, deleteData)
+routerAdministrator.delete('/:id', authMiddleware, deleteData)
 export { routerAdministrator }

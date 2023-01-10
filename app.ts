@@ -8,8 +8,11 @@ import {
   routerTodo,
   routerGame,
   routerAuth,
-  routerAdministrator
+  routerAdministrator,
+  routerRole,
+  routerRoleDropdown
 } from './src/index'
+import { routerPermission } from './src/permission/permission.route';
 
 dotenv.config()
 const PORT = process.env.PORT
@@ -51,3 +54,7 @@ app.use('/auth', routerAuth)
 app.use('/menu', routerMenu)
 app.use('/todo', routerTodo)
 app.use('/game', routerGame)
+app.use('/role', routerRole)
+app.use('/role-dropdown', routerRoleDropdown)
+app.use('/permission', routerPermission)
+app.use('/permission-dropdown', routerRoleDropdown)

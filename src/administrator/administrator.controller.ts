@@ -1,46 +1,47 @@
 import { Request, Response } from "express"
-import multer from 'multer'
-import fs from 'fs'
 import Administrator from "../auth/auth.model"
+import bcrypt from 'bcrypt'
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const dir = 'public/uploads'
-    fs.mkdirSync(dir, { recursive: true })
-    cb(null, dir);
-  },
-  filename: function (req, file, cb) {
-    if (!req.body.filename) {
-      cb(null, 'empty')
-    } else {
-      const name = file.originalname.toLowerCase().split(' ').join('_');
-      cb(null, Date.now() + name)
-    }
+const createData = async (req: Request, res: Response) => {
+  const { firstname, lastname, username, role } = req.body
+
+
+  if (req.body.password) {
+    const salt = await bcrypt.genSalt(10)
+    const hashedPass = await bcrypt.hash(req.body.password, salt)
+    req.body.password = hashedPass
   }
-});
-export const upload = multer({ storage: storage }).single('image');
 
-const createData = (req: any, res: Response) => {
-  const url = req.protocol + '://' + req.get("host")
   const administrator = new Administrator({
-    name: req.body.name !== 'undefined' ? req.body.name : '',
-    image: req.file?.filename !== undefined ? url + '/uploads/' + req.file?.filename : ''
+    firstname,
+    lastname,
+    username,
+    password: req.body.password,
+    role
   })
+  administrator.populate('role')
+
+
   try {
     return administrator
       .save()
       .then(administrator => res.status(200).json({ data: administrator }))
       .catch((validate: any) => res.status(201).json({ data: validate.errors }))
   } catch (error) {
-    console.log(error)
+    return res.status(500).json({ error })
   }
 }
 const readAllData = async (req: Request, res: Response) => {
   try {
-    const administrator = await Administrator
+    let administrators = await Administrator
       .find()
+      .populate('role')
       .select('-__v')
-    return res.status(200).json({ data: administrator })
+    administrators = administrators.map((administrator) => {
+      const { password, ...otherDetails } = administrator._doc
+      return otherDetails
+    })
+    return res.status(200).json({ data: administrators })
   } catch (error) {
     return res.status(500).json({ error })
   }
@@ -51,39 +52,44 @@ const readData = async (req: Request, res: Response) => {
   try {
     const administrator = await Administrator
       .findById(id)
+      .populate('role')
       .select('-__v')
-    return administrator ? res.status(200).json({ data: administrator }) : res.status(404).json({ message: 'Not found' })
+    if (administrator) {
+      const { password, ...otherDtails } = administrator._doc
+
+      res.status(200).json(otherDtails)
+    }
   } catch (error) {
     return res.status(500).json({ error })
   }
 }
 const updateData = async (req: Request, res: Response) => {
   const id = req.params.id
-  const url = req.protocol + '://' + req.get("host") + '/uploads/'
+  const { firstname, lastname, username, role } = req.body
+
+  if (req.body.password) {
+    const salt = await bcrypt.genSalt(10)
+    const hashedPass = await bcrypt.hash(req.body.password, salt)
+    req.body.password = hashedPass
+  }
+
   return Administrator
     .findById(id)
+    .select('-__v')
     .then(administrator => {
       if (administrator) {
-        if (req.file) {
-          const image = administrator && administrator.image.replace(url, "") || ''
-          fs.unlinkSync(`public/uploads/${image}`)
-          administrator.set({
-            name: req.body.name !== 'undefined' ? req.body.name : '',
-            image: req.file?.filename !== undefined ? url + req.file?.filename : ''
-          })
-        } else {
-          administrator.set({
-            name: req.body.name !== 'undefined' ? req.body.name : '',
-            image: administrator.image
-          })
-        }
+        administrator.set({
+          firstname,
+          lastname,
+          role,
+          username,
+          password: req.body.password,
+        })
+          .populate('role')
 
         return administrator
           .save()
-          .then(administrator => res.status(200).json({
-            status: 200,
-            data: administrator
-          }))
+          .then(administrator => res.status(200).json({ data: administrator }))
           .catch((validate: any) => res.status(201).json({ data: validate.errors }))
       } else {
         res.status(404).json({ message: 'Not found' })
@@ -95,14 +101,11 @@ const updateData = async (req: Request, res: Response) => {
 }
 const deleteData = async (req: Request, res: Response) => {
   const id = req.params.id
-  const url = req.protocol + '://' + req.get("host") + '/uploads/'
-  const administrators = await Administrator.findById(id) as any
 
-  const image = administrators && administrators.image.replace(url, "") || ''
   return Administrator.findByIdAndDelete(id)
     .then(administrator => {
       if (administrator) {
-        fs.unlinkSync(`public/uploads/${image}`)
+        // fs.unlinkSync(`public/uploads/${image}`)
         res.status(200).json({ data: 'Deleted successfully' })
       } else {
         res.status(404).json({ message: 'Not found' })

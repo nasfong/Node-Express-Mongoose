@@ -8,5 +8,5 @@ routerMenu.get('', authMiddleware, readAllData)
 routerMenu.post('', authMiddleware, createData)
 routerMenu.get('/:id', authMiddleware, readData)
 routerMenu.put('/:id', authMiddleware, updateData)
-routerMenu.delete('/id', authMiddleware, deleteData)
+routerMenu.delete('/:id', authMiddleware, deleteData)
 export { routerMenu }

@@ -1,15 +1,19 @@
 import { Request, Response } from "express"
 import Menu from "./menu.model"
 
-const createData = (req: Request, res: Response) => {
-  const menu = new Menu(req.body)
+const createData = async (req: Request, res: Response) => {
+  const { name, url, icon } = req.body
+  const menu = new Menu({ name, url, icon })
   try {
-    return menu
-      .save()
-      .then(menu => res.status(200).json({ data: menu }))
-      .catch((validate: any) => res.status(201).json({data: validate.errors}))
+    try {
+      const menu_1 = await menu
+        .save()
+      return res.status(200).json({ data: menu_1 })
+    } catch (validate) {
+      return res.status(201).json({ data: validate.errors })
+    }
   } catch (error) {
-    console.log(error)
+    res.status(500).json({ error })
   }
 }
 const readAllData = async (req: Request, res: Response) => {
@@ -39,14 +43,21 @@ const updateData = async (req: Request, res: Response) => {
 
   return Menu
     .findById(id)
-    .then(menu => {
+    .then(async menu => {
       if (menu) {
-        menu.set(req.body)
+        menu.set({
+          name: req.body.name,
+          url: req.body.url,
+          icon: req.body.icon,
+        })
 
-        return menu
-          .save()
-          .then(menu => res.status(200).json({ data: menu }))
-          .catch((validate: any) => res.status(201).json({ data: validate.errors }))
+        try {
+          const menu_1 = await menu
+            .save()
+          return res.status(200).json({ data: menu_1 })
+        } catch (validate) {
+          return res.status(201).json({ data: validate.errors })
+        }
       } else {
         res.status(404).json({ status: 'Not found' })
       }

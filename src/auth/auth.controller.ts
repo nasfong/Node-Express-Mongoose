@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import AuthModel from "./auth.model"
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken'
+import { tokenSign } from "../../Middleware/tokenMiddleware"
 
 const register = async (req: Request, res: Response) => {
 
@@ -20,14 +20,7 @@ const register = async (req: Request, res: Response) => {
     const oldUser = await AuthModel.findOne({ username: req.body.username })
     if (oldUser) return res.status(400).json({ message: 'username is already registered' })
 
-    //token
-    const token = jwt.sign({
-      username: auth.username,
-      id: auth._id,
-      firstname: auth.firstname,
-      lastname: auth.lastname,
-      role: auth.role
-    }, 'MERN', { expiresIn: '1h' })
+    const token = tokenSign({ auth })
 
     return auth
       .save()
@@ -53,13 +46,8 @@ const login = async (req: Request, res: Response) => {
     if (auth) {
       const passwrod_check = await bcrypt.compare(password, auth.password)
       if (!passwrod_check) return res.status(202).json({ message: 'Wrong Password' })
-      const token = jwt.sign({
-        username: auth.username,
-        id: auth._id,
-        firstname: auth.firstname,
-        lastname: auth.lastname,
-        role: auth.role
-      }, 'MERN', { expiresIn: '1h' })
+
+      const token = tokenSign({ auth })
 
       res.status(200).json({
         // data: auth,
