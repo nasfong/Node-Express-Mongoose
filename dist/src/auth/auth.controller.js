@@ -42,7 +42,7 @@ exports.__esModule = true;
 exports.readUser = exports.login = exports.register = void 0;
 var auth_model_1 = __importDefault(require("./auth.model"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var tokenMiddleware_1 = require("../../Middleware/tokenMiddleware");
 var register = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var salt, hashedPass, auth, oldUser, token_1, error_1;
     return __generator(this, function (_a) {
@@ -66,16 +66,8 @@ var register = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
             case 5:
                 oldUser = _a.sent();
                 if (oldUser)
-                    return [2 /*return*/, res.status(400).json({ message: 'username is already registered' })
-                        //token
-                    ];
-                token_1 = jsonwebtoken_1["default"].sign({
-                    username: auth.username,
-                    id: auth._id,
-                    firstname: auth.firstname,
-                    lastname: auth.lastname,
-                    role: auth.role
-                }, 'MERN', { expiresIn: '1h' });
+                    return [2 /*return*/, res.status(400).json({ message: 'username is already registered' })];
+                token_1 = (0, tokenMiddleware_1.tokenSign)({ auth: auth });
                 return [2 /*return*/, auth
                         .save()
                         .then(function (auth) { return res.status(200).json({
@@ -111,13 +103,7 @@ var login = function (req, res) { return __awaiter(void 0, void 0, void 0, funct
                 passwrod_check = _b.sent();
                 if (!passwrod_check)
                     return [2 /*return*/, res.status(202).json({ message: 'Wrong Password' })];
-                token = jsonwebtoken_1["default"].sign({
-                    username: auth.username,
-                    id: auth._id,
-                    firstname: auth.firstname,
-                    lastname: auth.lastname,
-                    role: auth.role
-                }, 'MERN', { expiresIn: '1h' });
+                token = (0, tokenMiddleware_1.tokenSign)({ auth: auth });
                 res.status(200).json({
                     // data: auth,
                     token: token

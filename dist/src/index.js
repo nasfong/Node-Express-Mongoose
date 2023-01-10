@@ -19,3 +19,4 @@ __exportStar(require("./auth/auth.route"), exports);
 __exportStar(require("./game/game.route"), exports);
 __exportStar(require("./menu/menu.route"), exports);
 __exportStar(require("./todo-list/todo.route"), exports);
+__exportStar(require("./role/role.route"), exports);

@@ -41,20 +41,39 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 exports.__esModule = true;
 exports.deleteData = exports.updateData = exports.readData = exports.readAllData = exports.createData = void 0;
 var menu_model_1 = __importDefault(require("./menu.model"));
-var createData = function (req, res) {
-    var menu = new menu_model_1["default"](req.body);
-    try {
-        return menu
-            .save()
-            .then(function (menu) { return res.status(200).json({ data: menu }); })["catch"](function (validate) { return res.status(201).json({ data: validate.errors }); });
-    }
-    catch (error) {
-        console.log(error);
-    }
-};
+var createData = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, name, url, icon, menu, menu_1, validate_1, error_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _a = req.body, name = _a.name, url = _a.url, icon = _a.icon;
+                menu = new menu_model_1["default"]({ name: name, url: url, icon: icon });
+                _b.label = 1;
+            case 1:
+                _b.trys.push([1, 6, , 7]);
+                _b.label = 2;
+            case 2:
+                _b.trys.push([2, 4, , 5]);
+                return [4 /*yield*/, menu
+                        .save()];
+            case 3:
+                menu_1 = _b.sent();
+                return [2 /*return*/, res.status(200).json({ data: menu_1 })];
+            case 4:
+                validate_1 = _b.sent();
+                return [2 /*return*/, res.status(201).json({ data: validate_1.errors })];
+            case 5: return [3 /*break*/, 7];
+            case 6:
+                error_1 = _b.sent();
+                res.status(500).json({ error: error_1 });
+                return [3 /*break*/, 7];
+            case 7: return [2 /*return*/];
+        }
+    });
+}); };
 exports.createData = createData;
 var readAllData = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var menu, error_1;
+    var menu, error_2;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -66,15 +85,15 @@ var readAllData = function (req, res) { return __awaiter(void 0, void 0, void 0,
                 menu = _a.sent();
                 return [2 /*return*/, res.status(200).json({ data: menu })];
             case 2:
-                error_1 = _a.sent();
-                return [2 /*return*/, res.status(500).json({ error: error_1 })];
+                error_2 = _a.sent();
+                return [2 /*return*/, res.status(500).json({ error: error_2 })];
             case 3: return [2 /*return*/];
         }
     });
 }); };
 exports.readAllData = readAllData;
 var readData = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, menu, error_2;
+    var id, menu, error_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -89,8 +108,8 @@ var readData = function (req, res) { return __awaiter(void 0, void 0, void 0, fu
                 menu = _a.sent();
                 return [2 /*return*/, menu ? res.status(200).json({ data: menu }) : res.status(404).json({ status: 'Not found' })];
             case 3:
-                error_2 = _a.sent();
-                return [2 /*return*/, res.status(500).json({ error: error_2 })];
+                error_3 = _a.sent();
+                return [2 /*return*/, res.status(500).json({ error: error_3 })];
             case 4: return [2 /*return*/];
         }
     });
@@ -102,17 +121,36 @@ var updateData = function (req, res) { return __awaiter(void 0, void 0, void 0, 
         id = req.params.id;
         return [2 /*return*/, menu_model_1["default"]
                 .findById(id)
-                .then(function (menu) {
-                if (menu) {
-                    menu.set(req.body);
-                    return menu
-                        .save()
-                        .then(function (menu) { return res.status(200).json({ data: menu }); })["catch"](function (validate) { return res.status(201).json({ data: validate.errors }); });
-                }
-                else {
-                    res.status(404).json({ status: 'Not found' });
-                }
-            })["catch"](function (error) { return res.status(500).json({ error: error }); })];
+                .then(function (menu) { return __awaiter(void 0, void 0, void 0, function () {
+                var menu_1, validate_2;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            if (!menu) return [3 /*break*/, 5];
+                            menu.set({
+                                name: req.body.name,
+                                url: req.body.url,
+                                icon: req.body.icon
+                            });
+                            _a.label = 1;
+                        case 1:
+                            _a.trys.push([1, 3, , 4]);
+                            return [4 /*yield*/, menu
+                                    .save()];
+                        case 2:
+                            menu_1 = _a.sent();
+                            return [2 /*return*/, res.status(200).json({ data: menu_1 })];
+                        case 3:
+                            validate_2 = _a.sent();
+                            return [2 /*return*/, res.status(201).json({ data: validate_2.errors })];
+                        case 4: return [3 /*break*/, 6];
+                        case 5:
+                            res.status(404).json({ status: 'Not found' });
+                            _a.label = 6;
+                        case 6: return [2 /*return*/];
+                    }
+                });
+            }); })["catch"](function (error) { return res.status(500).json({ error: error }); })];
     });
 }); };
 exports.updateData = updateData;

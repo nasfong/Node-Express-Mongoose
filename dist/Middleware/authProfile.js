@@ -35,19 +35,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 exports.__esModule = true;
 exports.authProfile = void 0;
-var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var tokenMiddleware_1 = require("./tokenMiddleware");
 var authProfile = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
     var token, decoded;
     return __generator(this, function (_a) {
         try {
             token = req.headers.authorization.split(' ')[1];
             if (token) {
-                decoded = jsonwebtoken_1["default"].verify(token, 'MERN', { ignoreExpiration: true });
+                decoded = (0, tokenMiddleware_1.tokenDecode)({ token: token });
                 req.body._id = decoded === null || decoded === void 0 ? void 0 : decoded.id;
                 // console.log(decoded)
                 res.status(200).json(decoded);

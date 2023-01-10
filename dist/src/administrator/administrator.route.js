@@ -10,4 +10,4 @@ routerAdministrator.get('', authMiddleware_1.authMiddleware, administrator_contr
 routerAdministrator.post('', authMiddleware_1.authMiddleware, administrator_controller_1.createData);
 routerAdministrator.get('/:id', authMiddleware_1.authMiddleware, administrator_controller_1.readData);
 routerAdministrator.put('/:id', authMiddleware_1.authMiddleware, administrator_controller_1.updateData);
-routerAdministrator["delete"]('/id', authMiddleware_1.authMiddleware, administrator_controller_1.deleteData);
+routerAdministrator["delete"]('/:id', authMiddleware_1.authMiddleware, administrator_controller_1.deleteData);

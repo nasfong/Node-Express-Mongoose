@@ -10,4 +10,4 @@ routerMenu.get('', authMiddleware_1.authMiddleware, menu_controller_1.readAllDat
 routerMenu.post('', authMiddleware_1.authMiddleware, menu_controller_1.createData);
 routerMenu.get('/:id', authMiddleware_1.authMiddleware, menu_controller_1.readData);
 routerMenu.put('/:id', authMiddleware_1.authMiddleware, menu_controller_1.updateData);
-routerMenu["delete"]('/id', authMiddleware_1.authMiddleware, menu_controller_1.deleteData);
+routerMenu["delete"]('/:id', authMiddleware_1.authMiddleware, menu_controller_1.deleteData);

@@ -24,15 +24,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 exports.__esModule = true;
 var mongoose_1 = __importStar(require("mongoose"));
-var AuthSchema = new mongoose_1.Schema({
-    username: { type: String, required: true },
-    password: {
-        type: String,
-        required: true
-    },
-    firstname: { type: String, required: true },
-    lastname: { type: String, required: true },
-    role: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'Roles' },
-    prifile: String
-}, { timestamps: true });
-exports["default"] = mongoose_1["default"].model('Auths', AuthSchema);
+var PermissionSchema = new mongoose_1.Schema({
+    name: { type: String, required: true },
+    role: [{
+            type: mongoose_1.Schema.Types.ObjectId,
+            required: true,
+            ref: 'Roles'
+        }]
+}, {
+    timestamps: true
+});
+exports["default"] = mongoose_1["default"].model('Permissions', PermissionSchema);
