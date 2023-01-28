@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt'
 
 const createData = async (req: Request, res: Response) => {
   const { firstname, lastname, username, role } = req.body
-
+  const url = req.protocol + '://' + req.get("host")
 
   if (req.body.password) {
     const salt = await bcrypt.genSalt(10)
@@ -17,7 +17,8 @@ const createData = async (req: Request, res: Response) => {
     lastname,
     username,
     password: req.body.password,
-    role
+    role,
+    profileImage: '/uploads/blank.png'
   })
   administrator.populate('role')
 
@@ -84,6 +85,7 @@ const updateData = async (req: Request, res: Response) => {
           role,
           username,
           password: req.body.password,
+          profileImage: '/uploads/blank.png'
         })
           .populate('role')
 

@@ -62,17 +62,47 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
+exports.httpServer = void 0;
 var express_1 = __importDefault(require("express"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var dotenv = __importStar(require("dotenv"));
 var body_parser_1 = __importDefault(require("body-parser"));
 var cors_1 = __importDefault(require("cors"));
+var http_1 = require("http");
+var socket_io_1 = require("socket.io");
 var index_1 = require("./src/index");
 var permission_route_1 = require("./src/permission/permission.route");
 dotenv.config();
 var PORT = process.env.PORT;
 var MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority";
 var app = (0, express_1["default"])();
+exports.httpServer = (0, http_1.createServer)(app);
+var io = new socket_io_1.Server(exports.httpServer, {
+    cors: {
+        origin: process.env.REACT_APP || process.env.FRONTEND
+    }
+});
+var arr = [];
+io.on('connect', function (socket) {
+    socket.on('userupdate', function (data) {
+        var _a;
+        // arr.push({ [socket.id]: data })
+        arr = arr.concat((_a = {}, _a[data] = socket.id, _a));
+        io.emit('userpush', arr);
+        console.log(arr);
+    });
+    socket.on('disconnect', function () {
+        arr = arr.filter(function (a) { return a[socket.id] !== socket.id; });
+        io.emit('userpush', arr);
+        console.log(socket.id);
+        console.log("user id = ".concat(arr, " disconnect"));
+    });
+    socket.on('userupdate', function () {
+    });
+    socket.on('send_message', function (data) {
+        io.emit('recv_message', data);
+    });
+});
 app.use(express_1["default"].static('public'));
 app.use(body_parser_1["default"].urlencoded({ extended: false }));
 app.use(body_parser_1["default"].json());
@@ -104,7 +134,7 @@ var connect = function () { return __awaiter(void 0, void 0, void 0, function ()
     });
 }); };
 connect();
-app.listen(PORT, function () {
+exports.httpServer.listen(PORT, function () {
     console.log("http://localhost:".concat(PORT));
 });
 app.use('/administrator', index_1.routerAdministrator);
@@ -116,3 +146,4 @@ app.use('/role', index_1.routerRole);
 app.use('/role-dropdown', index_1.routerRoleDropdown);
 app.use('/permission', permission_route_1.routerPermission);
 app.use('/permission-dropdown', index_1.routerRoleDropdown);
+app.use('/chat', index_1.routerChat);

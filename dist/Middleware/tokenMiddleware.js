@@ -8,6 +8,7 @@ var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 var tokenSign = function (_a) {
     var auth = _a.auth;
     var token = jsonwebtoken_1["default"].sign({
+        profileImage: auth.profileImage,
         username: auth.username,
         id: auth._id,
         firstname: auth.firstname,

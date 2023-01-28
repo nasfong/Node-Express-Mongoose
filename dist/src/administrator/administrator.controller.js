@@ -54,11 +54,12 @@ exports.deleteData = exports.updateData = exports.readData = exports.readAllData
 var auth_model_1 = __importDefault(require("../auth/auth.model"));
 var bcrypt_1 = __importDefault(require("bcrypt"));
 var createData = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, firstname, lastname, username, role, salt, hashedPass, administrator;
+    var _a, firstname, lastname, username, role, url, salt, hashedPass, administrator;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, firstname = _a.firstname, lastname = _a.lastname, username = _a.username, role = _a.role;
+                url = req.protocol + '://' + req.get("host");
                 if (!req.body.password) return [3 /*break*/, 3];
                 return [4 /*yield*/, bcrypt_1["default"].genSalt(10)];
             case 1:
@@ -74,7 +75,8 @@ var createData = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     lastname: lastname,
                     username: username,
                     password: req.body.password,
-                    role: role
+                    role: role,
+                    profileImage: '/uploads/blank.png'
                 });
                 administrator.populate('role');
                 try {
@@ -169,7 +171,8 @@ var updateData = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                             lastname: lastname,
                             role: role,
                             username: username,
-                            password: req.body.password
+                            password: req.body.password,
+                            profileImage: '/uploads/blank.png'
                         })
                             .populate('role');
                         return administrator

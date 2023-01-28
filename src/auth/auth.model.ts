@@ -12,7 +12,7 @@ const AuthSchema: Schema = new Schema(
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
     role: { type: Schema.Types.ObjectId, required: true, ref: 'Roles' },
-    prifile: String
+    profileImage: String
   },
   { timestamps: true }
 )

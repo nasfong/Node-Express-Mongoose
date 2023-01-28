@@ -3,11 +3,12 @@ import jwt from 'jsonwebtoken'
 
 export const tokenSign = ({ auth }) => {
   const token = jwt.sign({
+    profileImage: auth.profileImage,
     username: auth.username,
     id: auth._id,
     firstname: auth.firstname,
     lastname: auth.lastname,
-    role: auth.role
+    role: auth.role,
   }, 'MERN', { expiresIn: '1h' })
   return token
 }

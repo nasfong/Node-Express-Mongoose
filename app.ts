@@ -3,6 +3,8 @@ import mongoose from 'mongoose'
 import * as dotenv from 'dotenv';
 import bodyParser from 'body-parser'
 import cors from 'cors'
+import { createServer } from 'http'
+import { Server } from 'socket.io';
 import {
   routerMenu,
   routerTodo,
@@ -10,7 +12,8 @@ import {
   routerAuth,
   routerAdministrator,
   routerRole,
-  routerRoleDropdown
+  routerRoleDropdown,
+  routerChat
 } from './src/index'
 import { routerPermission } from './src/permission/permission.route';
 
@@ -19,6 +22,40 @@ const PORT = process.env.PORT
 const MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority"
 
 const app = express()
+export const httpServer = createServer(app)
+
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.REACT_APP || process.env.FRONTEND
+  }
+})
+
+let arr = []
+
+io.on('connect', (socket) => {
+  socket.on('userupdate', (data) => {
+    // arr.push({ [socket.id]: data })
+    arr = arr.concat({ [data]: socket.id })
+    io.emit('userpush', arr)
+    console.log(arr)
+  })
+  socket.on('disconnect', () => {
+    arr = arr.filter((a) => a[socket.id] !== socket.id)
+    io.emit('userpush', arr)
+    console.log(socket.id)
+    console.log(`user id = ${arr} disconnect`)
+  })
+
+  socket.on('userupdate', () => {
+  })
+
+
+
+  socket.on('send_message', (data) => {
+    io.emit('recv_message', data)
+  })
+
+})
 
 app.use(express.static('public'))
 
@@ -45,7 +82,7 @@ const connect = async () => {
 };
 connect()
 
-app.listen(PORT, () => {
+httpServer.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`)
 })
 
@@ -58,3 +95,4 @@ app.use('/role', routerRole)
 app.use('/role-dropdown', routerRoleDropdown)
 app.use('/permission', routerPermission)
 app.use('/permission-dropdown', routerRoleDropdown)
+app.use('/chat', routerChat)
