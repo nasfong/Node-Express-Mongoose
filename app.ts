@@ -26,7 +26,7 @@ export const httpServer = createServer(app)
 
 const io = new Server(httpServer, {
   cors: {
-    origin: process.env.REACT_APP || process.env.FRONTEND
+    origin: process.env.FRONTEND
   }
 })
 
