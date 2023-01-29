@@ -84,7 +84,7 @@ exports.httpServer = (0, http_1.createServer)(app);
 //   }
 // })
 var io = new socket_io_1.Server({
-    path: "http://127.0.0.1:5173"
+    path: "123"
 });
 var arr = [];
 io.on('connect', function (socket) {
