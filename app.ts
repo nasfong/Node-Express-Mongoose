@@ -31,7 +31,7 @@ export const httpServer = createServer(app)
 //   }
 // })
 const io = new Server({
-  path: "http://127.0.0.1:5173"
+  path: "123"
 });
 
 let arr = []
