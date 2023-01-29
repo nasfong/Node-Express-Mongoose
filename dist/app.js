@@ -77,10 +77,14 @@ var PORT = process.env.PORT;
 var MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority";
 var app = (0, express_1["default"])();
 exports.httpServer = (0, http_1.createServer)(app);
-var io = new socket_io_1.Server(exports.httpServer, {
-    cors: {
-        origin: process.env.REACT_APP || process.env.FRONTEND
-    }
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: process.env.REACT_APP
+//     // origin: process.env.FRONTEND
+//   }
+// })
+var io = new socket_io_1.Server({
+    path: "http://127.0.0.1:5173"
 });
 var arr = [];
 io.on('connect', function (socket) {

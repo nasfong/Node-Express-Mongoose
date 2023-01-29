@@ -24,11 +24,15 @@ const MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.0
 const app = express()
 export const httpServer = createServer(app)
 
-const io = new Server(httpServer, {
-  cors: {
-    origin: process.env.FRONTEND
-  }
-})
+// const io = new Server(httpServer, {
+//   cors: {
+//     origin: process.env.REACT_APP
+//     // origin: process.env.FRONTEND
+//   }
+// })
+const io = new Server({
+  path: "http://127.0.0.1:5173"
+});
 
 let arr = []
 
