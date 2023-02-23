@@ -62,7 +62,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 exports.__esModule = true;
-exports.httpServer = void 0;
 var express_1 = __importDefault(require("express"));
 var mongoose_1 = __importDefault(require("mongoose"));
 var dotenv = __importStar(require("dotenv"));
@@ -74,20 +73,21 @@ var index_1 = require("./src/index");
 var permission_route_1 = require("./src/permission/permission.route");
 dotenv.config();
 var PORT = process.env.PORT;
-var MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority";
+var MONGO_DB = process.env.MONGO_DB;
 var app = (0, express_1["default"])();
-exports.httpServer = (0, http_1.createServer)(app);
-// const io = new Server(httpServer, {
-//   cors: {
-//     origin: process.env.REACT_APP
-//     // origin: process.env.FRONTEND
-//   }
-// })
-var io = new socket_io_1.Server({
-    path: "123"
+var httpServer = (0, http_1.createServer)(app);
+var io = new socket_io_1.Server(httpServer, {
+    cors: {
+        origin: process.env.REACT_APP
+        // origin: process.env.FRONTEND
+    }
 });
+// const io = new Server({
+//   path: "123"
+// });
 var arr = [];
 io.on('connect', function (socket) {
+    console.log(socket.id);
     socket.on('userupdate', function (data) {
         var _a;
         // arr.push({ [socket.id]: data })
@@ -138,7 +138,7 @@ var connect = function () { return __awaiter(void 0, void 0, void 0, function ()
     });
 }); };
 connect();
-exports.httpServer.listen(PORT, function () {
+httpServer.listen(PORT, function () {
     console.log("http://localhost:".concat(PORT));
 });
 app.use('/administrator', index_1.routerAdministrator);

@@ -19,24 +19,25 @@ import { routerPermission } from './src/permission/permission.route';
 
 dotenv.config()
 const PORT = process.env.PORT
-const MONGO_DB = process.env.MONGO_DB || "mongodb+srv://newuser:rening007@crud.057ti.mongodb.net/food?retryWrites=true&w=majority"
+const MONGO_DB = process.env.MONGO_DB
 
 const app = express()
-export const httpServer = createServer(app)
+const httpServer = createServer(app)
 
-// const io = new Server(httpServer, {
-//   cors: {
-//     origin: process.env.REACT_APP
-//     // origin: process.env.FRONTEND
-//   }
-// })
-const io = new Server({
-  path: "123"
-});
+const io = new Server(httpServer, {
+  cors: {
+    origin: process.env.REACT_APP
+    // origin: process.env.FRONTEND
+  }
+})
+// const io = new Server({
+//   path: "123"
+// });
 
 let arr = []
 
 io.on('connect', (socket) => {
+  console.log(socket.id)
   socket.on('userupdate', (data) => {
     // arr.push({ [socket.id]: data })
     arr = arr.concat({ [data]: socket.id })

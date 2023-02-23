@@ -125,7 +125,7 @@ var updateData = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                                         case 1:
                                             roleAll = _a.sent();
                                             oldPermission = roleAll.permission.map(function (permission) { return permission.toString(); });
-                                            console.log(roleAll.permission.filter(function (filter) { return filter.toString().includes([newPermission_1]); }));
+                                            // console.log(roleAll.permission.filter(filter => filter.toString().includes([newPermission])))
                                             roleAll.set({
                                                 permission: newPermission_1.includes(oldPermission) ?
                                                     [newPermission_1]

@@ -66,7 +66,6 @@ var createData = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                console.log(req.file);
                 url = req.protocol + '://' + req.get("host");
                 game = new game_model_1["default"]({
                     name: req.body.name !== 'undefined' ? req.body.name : '',
@@ -144,7 +143,7 @@ var updateData = function (req, res) { return __awaiter(void 0, void 0, void 0, 
     return __generator(this, function (_a) {
         id = req.params.id;
         url = req.protocol + '://' + req.get("host") + '/uploads/';
-        console.log(req.file);
+        // console.log(req.file)
         return [2 /*return*/, game_model_1["default"]
                 .findById(id)
                 .then(function (game) {

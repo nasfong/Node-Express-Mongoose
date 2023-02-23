@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 export const upload = multer({ storage: storage }).single('image');
 
 const createData = async (req: Request, res: Response) => {
-  console.log(req.file)
+  // console.log(req.file)
   const url = req.protocol + '://' + req.get("host")
   const game = new Game({
     name: req.body.name !== 'undefined' ? req.body.name : '',
@@ -64,7 +64,7 @@ const readData = async (req: Request, res: Response) => {
 const updateData = async (req: Request, res: Response) => {
   const id = req.params.id
   const url = req.protocol + '://' + req.get("host") + '/uploads/'
-  console.log(req.file)
+  // console.log(req.file)
   return Game
     .findById(id)
     .then(game => {

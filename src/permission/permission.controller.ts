@@ -52,7 +52,7 @@ const updateData = async (req: Request, res: Response) => {
           permission.role.map(async (role) => {
             const roleAll = await Role.findById(role.toString())
             const oldPermission = roleAll.permission.map(permission => permission.toString())
-            console.log(roleAll.permission.filter(filter => filter.toString().includes([newPermission])))
+            // console.log(roleAll.permission.filter(filter => filter.toString().includes([newPermission])))
             roleAll.set({
               permission:
                 newPermission.includes(oldPermission) ?
