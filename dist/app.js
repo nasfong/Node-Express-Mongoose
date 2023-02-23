@@ -87,22 +87,7 @@ var io = new socket_io_1.Server(httpServer, {
 // });
 var arr = [];
 io.on('connect', function (socket) {
-    // console.log(socket.id)
-    socket.on('userupdate', function (data) {
-        var _a;
-        // arr.push({ [socket.id]: data })
-        arr = arr.concat((_a = {}, _a[data] = socket.id, _a));
-        io.emit('userpush', arr);
-        // console.log(arr)
-    });
-    socket.on('disconnect', function () {
-        arr = arr.filter(function (a) { return a[socket.id] !== socket.id; });
-        io.emit('userpush', arr);
-        // console.log(socket.id)
-        // console.log(`user id = ${arr} disconnect`)
-    });
-    socket.on('userupdate', function () {
-    });
+    console.log(socket.id);
     socket.on('send_message', function (data) {
         io.emit('recv_message', data);
     });

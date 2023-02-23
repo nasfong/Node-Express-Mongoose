@@ -37,24 +37,7 @@ const io = new Server(httpServer, {
 let arr = []
 
 io.on('connect', (socket) => {
-  // console.log(socket.id)
-  socket.on('userupdate', (data) => {
-    // arr.push({ [socket.id]: data })
-    arr = arr.concat({ [data]: socket.id })
-    io.emit('userpush', arr)
-    // console.log(arr)
-  })
-  socket.on('disconnect', () => {
-    arr = arr.filter((a) => a[socket.id] !== socket.id)
-    io.emit('userpush', arr)
-    // console.log(socket.id)
-    // console.log(`user id = ${arr} disconnect`)
-  })
-
-  socket.on('userupdate', () => {
-  })
-
-
+  console.log(socket.id)
 
   socket.on('send_message', (data) => {
     io.emit('recv_message', data)
