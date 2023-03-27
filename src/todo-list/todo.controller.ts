@@ -1,13 +1,18 @@
 import { Request, Response } from "express"
 import Todo from "./todo.model"
 
-const createData = (req: Request, res: Response) => {
-  const todo = new Todo(req.body)
+const createData = async (req: Request, res: Response) => {
+  const { name, isCompleted } = req.body
+  const todo = new Todo({ name, isCompleted })
+  console.log(todo)
   try {
-    return todo
-      .save()
-      .then(todo => res.status(200).json({ data: todo }))
-      .catch((validate: any) => res.status(201).json({ data: validate.errors }))
+    try {
+      const todo_1 = await todo
+        .save()
+      return res.status(200).json({ data: todo_1 })
+    } catch (validate) {
+      return res.status(201).json({ data: validate.errors })
+    }
   } catch (error) {
     console.log(error)
   }
@@ -60,7 +65,7 @@ const updateData = async (req: Request, res: Response) => {
 }
 const deleteData = async (req: Request, res: Response) => {
   const id = req.params.id
-  
+
   return Todo.findByIdAndDelete(id)
     .then(todo => todo ? res.status(200).json({ message: 'Deleted' }) : res.status(404).json({ message: 'Not found' }))
     .catch(error => res.status(500).json({ error }))
